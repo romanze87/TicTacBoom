@@ -4,14 +4,20 @@ using namespace std;
 
 int main () {
     while (true) {
+        resetFunc();
         mainMenu();
         if (choice == 1) {
-            cout << "\n\n";
+            Clear();
+            theBoard();
             while (gameOn) {
                 if ((xTurns > 0) && (oTurns > 0)) {
                     xTurn();
+                    Clear();
+                    theBoard();
                     if (gameOn) {
                         oTurn();
+                        Clear();
+                        theBoard();
                     }
                 } else {
                     cout << "It's a draw!\n\n";
