@@ -5,7 +5,7 @@
 using namespace std;
 
 bool gameOn = true;
-int xTurns = 3, oTurns = 3, xBomb = 1, oBomb = 1, choice;
+int xTurns = 3, oTurns = 3, xBombs = 1, oBombs = 1, choice;
 
 string A1 = "1", A2 = "2", A3 = "3";
 string B1 = "4", B2 = "5", B3 = "6";
@@ -14,9 +14,11 @@ void theBoard () {
     if (gameOn) {
         cout << "\x1B[2J\x1B[H";
     }
-    cout << "| X Player Bombs Left: " << xBomb << " |" << endl;
-    cout << "| O Player Bombs Left: " << oBomb << " |" << endl;
-    cout << "|________________________|" << endl << endl;
+    cout << "| X Player - Bombs: " << xBombs << " |" << endl;
+    cout << "|            Turns: " << xTurns << " |" << endl;
+    cout << "| O Player - Bombs: " << oBombs << " |" << endl;
+    cout << "|            Turns: " << oTurns << " |" << endl;
+    cout << "|_____________________|" << endl << endl;
 	cout << A1 << "  | " << A2 << "  | " << A3 << endl;
 	cout << "___|____|___" << endl;
 	cout << B1 << "  | " << B2 << "  | " << B3 << endl;
@@ -139,27 +141,56 @@ void winningCond(string p) {
         ((A3 == p) &&
         (B2 == p) &&
         (C1 == p)))) {
-        Clear();
-        gameOn = false;
+        theBoard();
         cout << p << " Player Wins!\n\n";
+        gameOn = false;
         cin.get();
     };
 }
 
-bool chooseSquareCond (int iChoice, string p) {
-    if (!(isEqualTo(iChoice, p)) &&
-    (iChoice == 1 ||
-    iChoice == 2 ||
-    iChoice == 3 ||
-    iChoice == 4 ||
-    iChoice == 5 ||
-    iChoice == 6 ||
-    iChoice == 7 ||
-    iChoice == 8 ||
-    iChoice == 9)) {
-        return false;
-    } else {
-        return true;
+bool chooseSquareCond (int iChoice, string p, string o, int iTurns, int iBombs) {
+    //If Player still has Turns + Bombs
+    if ((iTurns > 0) && (iBombs > 0)) {
+        if (!(isEqualTo(iChoice, p)) &&
+        (iChoice == 1 ||
+        iChoice == 2 ||
+        iChoice == 3 ||
+        iChoice == 4 ||
+        iChoice == 5 ||
+        iChoice == 6 ||
+        iChoice == 7 ||
+        iChoice == 8 ||
+        iChoice == 9)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    //If Player still has Turns and no Bombs
+    if ((iTurns > 0) && (iBombs == 0)) {
+        if (!((isEqualTo(iChoice, p)) &&
+        (isEqualTo(iChoice, o))) &&
+        (iChoice == 1 ||
+        iChoice == 2 ||
+        iChoice == 3 ||
+        iChoice == 4 ||
+        iChoice == 5 ||
+        iChoice == 6 ||
+        iChoice == 7 ||
+        iChoice == 8 ||
+        iChoice == 9)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    //If Player still has Bombs and no Turns
+    if ((iBombs > 0) && (iTurns == 0)) {
+        if (isEqualTo(iChoice, o)) {
+            return false;
+        } else {
+            return true;
+        }
     }
 };
 
@@ -170,11 +201,11 @@ void xTurn () {
     theBoard();
     cout << "X Player, Choose a valid square!" << endl;
     cin >> x1;
-    } while ((chooseSquareCond(x1, "X")));
+    } while ((chooseSquareCond(x1, "X", "O", xTurns, xBombs)));
     cout << endl;
     x1--;
-    if (posCheck[x1] == 0  && xBomb > 0) {
-        xBomb--;
+    if (posCheck[x1] == 0  && xBombs> 0) {
+        xBombs--;
     } else {
         xTurns--;
     }
@@ -189,11 +220,11 @@ void oTurn () {
         theBoard();
         cout << "O Player, Choose a valid square!" << endl;
         cin >> o1;
-    } while (chooseSquareCond(o1, "O"));
+    } while (chooseSquareCond(o1, "O", "X", oTurns, oBombs));
     cout << endl;
     o1--;
-    if (posCheck[o1] == 0  && oBomb > 0) {
-        oBomb--;
+    if (posCheck[o1] == 0  && oBombs > 0) {
+        oBombs--;
     } else {
         oTurns--;
     }
@@ -225,7 +256,7 @@ void resetFunc () {
     A1 = "1", A2 = "2", A3 = "3";
     B1 = "4", B2 = "5", B3 = "6";
     C1 = "7", C2 = "8", C3 = "9";
-    xTurns = 3, oTurns = 3, xBomb = 1, oBomb = 1;
+    xTurns = 3, oTurns = 3, xBombs = 1, oBombs = 1;
     for (int i = 0; i < 9; i++) {
         int arrayVal = 1;
         posCheck[i] = arrayVal;
