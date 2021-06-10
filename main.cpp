@@ -10,23 +10,25 @@ int main () {
         if (choice == 1) {
             theBoard();
             while (gameOn) {
-                if ((xTurns > 0) && (oTurns > 0)) {
+                if (((xTurns > 0) || (xBombs > 0)) || ((oTurns > 0) || (oBombs > 0))) {
                     xTurn();
-                    theBoard();
+                    if (gameOn) {
+                        theBoard();
+                    }
                     if (gameOn) {
                         oTurn();
-                        theBoard();
+                        if (gameOn) {
+                            theBoard();
+                        }
                     }
                 } else {
                     cout << "It's a draw!\n\n";
                     gameOn = false;
-                    cin.get();
                 }
             }
         } else {
             theRules();
             cin.get();
-
         }
     }
     return 0;
