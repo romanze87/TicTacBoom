@@ -32,148 +32,159 @@ void printNoSuicide() {
     cout << "You cannot use a bomb on yourself!" << endl;
 }
 
-string noSuicide (int iTurn) {
-    iTurn++;
+bool isEqualTo (int iTurn, string isI) {
+    string i;
     switch (iTurn){
         case 1:
-            return A1;
+            i = A1;
             break;
         case 2:
-            return A2;
+            i = A2;
             break;
         case 3:
-            return A3;
+            i = A3;
             break;
         case 4:
-            return B1;
+            i = B1;
             break;
         case 5:
-            return B2;
+            i = B2;
             break;
         case 6:
-            return C3;
+            i = C3;
             break;
         case 7:
-            return C1;
+            i = C1;
             break;
         case 8:
-            return C2;
+            i = C2;
             break;
         case 9:
-            return C3;
+            i = C3;
             break;
         default:
             break;
             return 0;
     }
-    return 0;
+    if (i == isI) {
+        return true;
+    } else {
+        return false;
+    }
 };
 
-///X Players Turn
-int x1;
 int posCheck[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+void boardUpdateSwitch (int p, string i) {
+    switch (p) {
+        case 0:
+            A1 = i;
+            posCheck [0] = 0;
+            break;
+        case 1:
+            A2 = i;
+            posCheck [1] = 0;
+            break;
+        case 2:
+            A3 = i;
+            posCheck [2] = 0;
+            break;
+        case 3:
+            B1 = i;
+            posCheck [3] = 0;
+            break;
+        case 4:
+            B2 = i;
+            posCheck [4] = 0;
+            break;
+        case 5:
+            B3 = i;
+            posCheck [5] = 0;
+            break;
+        case 6:
+            C1 = i;
+            posCheck [6] = 0;
+            break;
+        case 7:
+            C2 = i;
+            posCheck [7] = 0;
+            break;
+        case 8:
+            C3 = i;
+            posCheck [8] = 0;
+            break;
+        default:
+            break;
+    }
+};
+
+void winningCond(string p) {
+    if ((((A1 == p) &&
+        (A2 == p) &&
+        (A3 == p)) ||
+        ((B1 == p) &&
+        (B2 == p) &&
+        (B3 == p)) ||
+        ((C1 == p) &&
+        (C2 == p) &&
+        (C3 == p)) ||
+        ((A1 == p) &&
+        (B1 == p) &&
+        (C1 == p)) ||
+        ((A2 == p) &&
+        (B2 == p) &&
+        (C2 == p)) ||
+        ((A3 == p) &&
+        (B3 == p) &&
+        (C3 == p)) ||
+        ((A1 == p) &&
+        (B2 == p) &&
+        (C3 == p)) ||
+        ((A3 == p) &&
+        (B2 == p) &&
+        (C1 == p)))) {
+        Clear();
+        gameOn = false;
+        cout << p << " Player Wins!\n\n";
+        cin.get();
+    };
+}
+
+bool chooseSquareCond (int iChoice, string p) {
+    if (!(isEqualTo(iChoice, p)) &&
+    (iChoice == 1 ||
+    iChoice == 2 ||
+    iChoice == 3 ||
+    iChoice == 4 ||
+    iChoice == 5 ||
+    iChoice == 6 ||
+    iChoice == 7 ||
+    iChoice == 8 ||
+    iChoice == 9)) {
+        return false;
+    } else {
+        return true;
+    }
+};
+
+///X Players Turn/////////////////////////////////
+int x1;
 void xTurn () {
     do {
     Clear();
     theBoard();
     cout << "X Player, Choose a valid square!" << endl;
     cin >> x1;
-    } while (!((x1 == 1) ||
-            (x1 == 2) ||
-            (x1 == 3) ||
-            (x1 == 4) ||
-            (x1 == 5) ||
-            (x1 == 6) ||
-            (x1 == 7) ||
-            (x1 == 8) ||
-            (x1 == 9)));
+    } while ((chooseSquareCond(x1, "X")));
     cout << endl;
     x1--;
-    if (posCheck[x1] == 0) {
-        if ((xBomb > 0) && (noSuicide(x1) != "X")) {
-        x1++;
+    if (posCheck[x1] == 0  && xBomb > 0) {
         xBomb--;
-        } else {
-        x1 = 0;
-        }
-    } else {
-    xTurns--;
-    x1++;
     }
-
-    switch (x1) {
-        case 1:
-            A1 = "X";
-            posCheck [0] = 0;
-            break;
-        case 2:
-            A2 = "X";
-            posCheck [1] = 0;
-            break;
-        case 3:
-            A3 = "X";
-            posCheck [2] = 0;
-            break;
-        case 4:
-            B1 = "X";
-            posCheck [3] = 0;
-            break;
-        case 5:
-            B2 = "X";
-            posCheck [4] = 0;
-            break;
-        case 6:
-            B3 = "X";
-            posCheck [5] = 0;
-            break;
-        case 7:
-            C1 = "X";
-            posCheck [6] = 0;
-            break;
-        case 8:
-            C2 = "X";
-            posCheck [7] = 0;
-            break;
-        case 9:
-            C3 = "X";
-            posCheck [8] = 0;
-            break;
-        default:
-            break;
-    }
-
-    if ((((A1 == "X") &&
-        (A2 == "X") &&
-        (A3 == "X")) ||
-        ((B1 == "X") &&
-        (B2 == "X") &&
-        (B3 == "X")) ||
-        ((C1 == "X") &&
-        (C2 == "X") &&
-        (C3 == "X")) ||
-        ((A1 == "X") &&
-        (B1 == "X") &&
-        (C1 == "X")) ||
-        ((A2 == "X") &&
-        (B2 == "X") &&
-        (C2 == "X")) ||
-        ((A3 == "X") &&
-        (B3 == "X") &&
-        (C3 == "X")) ||
-        ((A1 == "X") &&
-        (B2 == "X") &&
-        (C3 == "X")) ||
-        ((A3 == "X") &&
-        (B2 == "X") &&
-        (C1 == "X")))) {
-        Clear();
-        gameOn = false;
-        cout << "X Player Wins!\n\n";
-        cin.get();
-    };
+    boardUpdateSwitch(x1, "X");
+    winningCond("X");
 };
-
-///O Players Turn
+/////////////////////////////////////////////////
+///O Players Turn////////////////////////////////
 int o1;
 void oTurn () {
     do {
@@ -181,99 +192,16 @@ void oTurn () {
         theBoard();
         cout << "O Player, Choose a valid square!" << endl;
         cin >> o1;
-    } while (!((o1 == 1) ||
-            (o1 == 2) ||
-            (o1 == 3) ||
-            (o1 == 4) ||
-            (o1 == 5) ||
-            (o1 == 6) ||
-            (o1 == 7) ||
-            (o1 == 8) ||
-            (o1 == 9)));
+    } while (chooseSquareCond(o1, "O"));
     cout << endl;
     o1--;
-    if (posCheck[o1] == 0) {
-        if ((oBomb > 0) && (noSuicide(o1) != "O")) {
-        o1++;
+    if (posCheck[o1] == 0  && oBomb > 0) {
         oBomb--;
-        } else {
-        oTurns--;
-        o1 = 0;
-        }
-    } else {
-    o1++;
     }
-    switch (o1) {
-        case 1:
-            A1 = "O";
-            posCheck [0] = 0;
-            break;
-        case 2:
-            A2 = "O";
-            posCheck [1] = 0;
-            break;
-        case 3:
-            A3 = "O";
-            posCheck [2] = 0;
-            break;
-        case 4:
-            B1 = "O";
-            posCheck [3] = 0;
-            break;
-        case 5:
-            B2 = "O";
-            posCheck [4] = 0;
-            break;
-        case 6:
-            B3 = "O";
-            posCheck [5] = 0;
-            break;
-        case 7:
-            C1 = "O";
-            posCheck [6] = 0;
-            break;
-        case 8:
-            C2 = "O";
-            posCheck [7] = 0;
-            break;
-        case 9:
-            C3 = "O";
-            posCheck [8] = 0;
-            break;
-        default:
-            break;
-    };
-    if ((((A1 == "O") &&
-        (A2 == "O") &&
-        (A3 == "O")) ||
-        ((B1 == "O") &&
-        (B2 == "O") &&
-        (B3 == "O")) ||
-        ((C1 == "O") &&
-        (C2 == "O") &&
-        (C3 == "O")) ||
-        ((A1 == "O") &&
-        (B1 == "O") &&
-        (C1 == "O")) ||
-        ((A2 == "O") &&
-        (B2 == "O") &&
-        (C2 == "O")) ||
-        ((A3 == "O") &&
-        (B3 == "O") &&
-        (C3 == "O")) ||
-        ((A1 == "O") &&
-        (B2 == "O") &&
-        (C3 == "O")) ||
-        ((A3 == "O") &&
-        (B2 == "O") &&
-        (C1 == "O")))) {
-        Clear();
-        gameOn = false;
-        cout << "O Player Wins!\n\n";
-        cin.get();
-    }
+    boardUpdateSwitch(o1, "O");
+    winningCond("O");
 };
-
+/////////////////////////////////////////////////
 void mainMenu (){
     cout << "Tic Tac Boom!" << endl;
 	cout << "1. Start A New Game" << endl;
