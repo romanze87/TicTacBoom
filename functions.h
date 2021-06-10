@@ -6,17 +6,14 @@ using namespace std;
 
 bool gameOn = true;
 int xTurns = 3, oTurns = 3, xBomb = 1, oBomb = 1, choice;
-void Clear()
-{
-    if (gameOn) {
-        cout << "\x1B[2J\x1B[H";
-    }
-}
 
 string A1 = "1", A2 = "2", A3 = "3";
 string B1 = "4", B2 = "5", B3 = "6";
 string C1 = "7", C2 = "8", C3 = "9";
 void theBoard () {
+    if (gameOn) {
+        cout << "\x1B[2J\x1B[H";
+    }
     cout << "| X Player Bombs Left: " << xBomb << " |" << endl;
     cout << "| O Player Bombs Left: " << oBomb << " |" << endl;
     cout << "|________________________|" << endl << endl;
@@ -170,7 +167,6 @@ bool chooseSquareCond (int iChoice, string p) {
 int x1;
 void xTurn () {
     do {
-    Clear();
     theBoard();
     cout << "X Player, Choose a valid square!" << endl;
     cin >> x1;
@@ -179,6 +175,8 @@ void xTurn () {
     x1--;
     if (posCheck[x1] == 0  && xBomb > 0) {
         xBomb--;
+    } else {
+        xTurns--;
     }
     boardUpdateSwitch(x1, "X");
     winningCond("X");
@@ -188,7 +186,6 @@ void xTurn () {
 int o1;
 void oTurn () {
     do {
-        Clear();
         theBoard();
         cout << "O Player, Choose a valid square!" << endl;
         cin >> o1;
@@ -197,6 +194,8 @@ void oTurn () {
     o1--;
     if (posCheck[o1] == 0  && oBomb > 0) {
         oBomb--;
+    } else {
+        oTurns--;
     }
     boardUpdateSwitch(o1, "O");
     winningCond("O");
