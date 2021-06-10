@@ -8,16 +8,13 @@ int main () {
         resetFunc();
         mainMenu();
         if (choice == 1) {
-            Clear();
             theBoard();
             while (gameOn) {
                 if ((xTurns > 0) && (oTurns > 0)) {
                     xTurn();
-                    Clear();
                     theBoard();
                     if (gameOn) {
                         oTurn();
-                        Clear();
                         theBoard();
                     }
                 } else {
