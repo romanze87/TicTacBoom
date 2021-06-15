@@ -1,23 +1,39 @@
 #ifndef FUNCTIONS_H_INCLUDED
 #define FUNCTIONS_H_INCLUDED
 #include <iostream>
-#include <string>
 using namespace std;
 
+class Player {
+    public:
+        Player(){};
+        int turn = 3;
+        int bomb = 1;
+        int choice;
+        string name;
+
+    private:
+
+};
+
+Player x;
+Player o;
+
 bool gameOn = true;
-int xTurns = 3, oTurns = 3, xBombs = 1, oBombs = 1, choice;
 
 string A1 = "1", A2 = "2", A3 = "3";
 string B1 = "4", B2 = "5", B3 = "6";
 string C1 = "7", C2 = "8", C3 = "9";
+
 void theBoard () {
     if (gameOn) {
         cout << "\x1B[2J\x1B[H";
-    }
-    cout << "| X Player - Bombs: " << xBombs << " |" << endl;
-    cout << "|            Turns: " << xTurns << " |" << endl;
-    cout << "| O Player - Bombs: " << oBombs << " |" << endl;
-    cout << "|            Turns: " << oTurns << " |" << endl;
+    };
+    cout << x.name << " (X)" << endl;
+    cout << " - Bombs: " << x.bomb << endl;
+    cout << " - Turns: " << x.turn << endl;
+    cout << o.name << " (O)" << endl;
+    cout << " - Bombs: " << o.bomb << endl;
+    cout << " - Turns: " << o.turn << endl;
     cout << "|_____________________|" << endl << endl;
 	cout << A1 << "  | " << A2 << "  | " << A3 << endl;
 	cout << "___|____|___" << endl;
@@ -116,7 +132,7 @@ void boardUpdateSwitch (int p, string i) {
     }
 };
 
-void winningCond(string p) {
+void winningCond(string p, string n) {
     if ((((A1 == p) &&
         (A2 == p) &&
         (A3 == p)) ||
@@ -142,7 +158,7 @@ void winningCond(string p) {
         (B2 == p) &&
         (C1 == p)))) {
         theBoard();
-        cout << p << " Player Wins!\n\n";
+        cout << n << " Wins!\n\n";
         gameOn = false;
         cin.get();
     };
@@ -195,52 +211,55 @@ bool chooseSquareCond (int iChoice, string p, string o, int iTurns, int iBombs) 
 };
 
 ///X Players Turn/////////////////////////////////
-int x1;
 void xTurn () {
     do {
     theBoard();
-    cout << "X Player, Choose a valid square!" << endl;
-    cin >> x1;
-    } while ((chooseSquareCond(x1, "X", "O", xTurns, xBombs)));
+    cout << x.name << ", Choose a valid square!" << endl;
+    cin >> x.choice;
+    } while ((chooseSquareCond(x.choice, "X", "O", x.turn, x.bomb)));
     cout << endl;
-    x1--;
-    if (posCheck[x1] == 0  && xBombs> 0) {
-        xBombs--;
+    x.choice--;
+    if (posCheck[x.choice] == 0  && x.bomb> 0) {
+        x.bomb--;
     } else {
-        xTurns--;
+        x.turn--;
     }
-    boardUpdateSwitch(x1, "X");
-    winningCond("X");
+    boardUpdateSwitch(x.choice, "X");
+    winningCond("X", x.name);
 };
 /////////////////////////////////////////////////
 ///O Players Turn////////////////////////////////
-int o1;
 void oTurn () {
     do {
         theBoard();
-        cout << "O Player, Choose a valid square!" << endl;
-        cin >> o1;
-    } while (chooseSquareCond(o1, "O", "X", oTurns, oBombs));
+        cout << o.name << ", Choose a valid square!" << endl;
+        cin >> o.choice;
+    } while (chooseSquareCond(o.choice, "O", "X", o.turn, o.bomb));
     cout << endl;
-    o1--;
-    if (posCheck[o1] == 0  && oBombs > 0) {
-        oBombs--;
+    o.choice--;
+    if (posCheck[o.choice] == 0  && o.bomb > 0) {
+        o.bomb--;
     } else {
-        oTurns--;
+        o.turn--;
     }
-    boardUpdateSwitch(o1, "O");
-    winningCond("O");
+    boardUpdateSwitch(o.choice, "O");
+    winningCond("O", o.name);
 };
 /////////////////////////////////////////////////
+int mainMenuChoice;
 void mainMenu (){
-    cout << "Tic Tac Boom!" << endl;
-	cout << "1. Start A New Game" << endl;
+    cout << "Tic Tac Boom!" << endl << endl;
+    cout << "Enter X Players Name: " << endl << endl;
+    cin >> x.name;
+    cout << endl << "Enter O Players Name: " << endl << endl;
+    cin >> o.name;
+	cout << endl << "1. Start A New Game" << endl;
     cout << "2. Show The Rules" << endl;
     cout << "Select: ";
-    cin >> choice;
-    while (!((choice == 1) || (choice == 2))) {
+    cin >> mainMenuChoice;
+    while (!((mainMenuChoice == 1) || (mainMenuChoice == 2))) {
         cout << "You must choose 1 or 2!\n";
-        cin >> choice;
+        cin >> mainMenuChoice;
 	};
 }
 
@@ -256,7 +275,7 @@ void resetFunc () {
     A1 = "1", A2 = "2", A3 = "3";
     B1 = "4", B2 = "5", B3 = "6";
     C1 = "7", C2 = "8", C3 = "9";
-    xTurns = 3, oTurns = 3, xBombs = 1, oBombs = 1;
+    x.turn = 3, o.turn = 3, x.bomb = 1, o.bomb = 1;
     for (int i = 0; i < 9; i++) {
         int arrayVal = 1;
         posCheck[i] = arrayVal;
