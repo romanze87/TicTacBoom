@@ -1,16 +1,14 @@
-#include <iostream>
-//#include <gtkmm.h>
 #include "functions.h"
-using namespace std;
+
 
 int main () {
     while (true) {
         resetFunc();
         mainMenu();
-        if (choice == 1) {
+        if (mainMenuChoice == 1) {
             theBoard();
             while (gameOn) {
-                if (((xTurns > 0) || (xBombs > 0)) || ((oTurns > 0) || (oBombs > 0))) {
+                if (((x.turn > 0) || (x.bomb > 0)) || ((o.turn > 0) || (o.bomb > 0))) {
                     xTurn();
                     if (gameOn) {
                         theBoard();
